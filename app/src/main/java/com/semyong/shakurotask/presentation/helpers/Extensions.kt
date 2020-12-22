@@ -15,10 +15,3 @@ fun ImageView.load(url: String) =
     Glide.with(this)
         .load(url)
         .into(this)
-
-fun View.toTransitionGroup() = this to transitionName
-
-fun Fragment.waitForTransition(targetView: View) {
-    postponeEnterTransition()
-    targetView.doOnPreDraw { startPostponedEnterTransition() }
-}

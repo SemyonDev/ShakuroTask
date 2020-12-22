@@ -7,22 +7,16 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.lifecycle.Observer
-import androidx.navigation.ActivityNavigator
 import androidx.navigation.NavDirections
-import androidx.navigation.Navigation
 import androidx.navigation.Navigation.findNavController
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.semyong.shakurotask.R
 import com.semyong.shakurotask.data.entities.User
 import com.semyong.shakurotask.databinding.FragmentHomelistBinding
-import com.semyong.shakurotask.databinding.ItemUserBinding
 import com.semyong.shakurotask.presentation.fragments.BaseFragment
 import com.semyong.shakurotask.presentation.fragments.listfragment.adapters.ListItemAction
 import com.semyong.shakurotask.presentation.fragments.listfragment.adapters.UsersAdapter
 import com.semyong.shakurotask.presentation.helpers.showToastLong
-import com.semyong.shakurotask.presentation.helpers.waitForTransition
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -90,7 +84,6 @@ class HomeListFragment : BaseFragment(), ListItemAction {
             image to user.id.toString(),
             title to (user.login + user.id)
         )
-//        val extras = FragmentNavigatorExtras(binding.itemUserAvatar to "url_${user.id}")
 
         findNavController(this@HomeListFragment.binding.userListRv).navigate(direction, extras)
     }
