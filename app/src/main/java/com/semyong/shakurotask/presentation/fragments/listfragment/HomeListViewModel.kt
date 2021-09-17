@@ -21,14 +21,18 @@ class HomeListViewModel(
     private val dataErrorManager: DataErrorManager
 ) : BaseViewModel() {
 
-    val mError: MutableLiveData<String> by lazy { MutableLiveData<String>() }
-    val mUsersResult: MutableLiveData<LiveData<PagedList<User>>> by lazy { MutableLiveData<LiveData<PagedList<User>>>() }
+    protected val _error: MutableLiveData<String> by lazy { MutableLiveData<String>() }
+    val mError: LiveData<String> = _error
+
+    protected val _usersResult: MutableLiveData<LiveData<PagedList<User>>> by lazy { MutableLiveData<LiveData<PagedList<User>>>() }
+    val mUsersResult: LiveData<LiveData<PagedList<User>>> = _usersResult
+
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
             dataErrorManager.throwableFlow.collect() {
                 it?.let {
-                    mError.postValue(it.toString())
+                    _error.postValue(it.toString())
                     Log.d("Tag", "dataErrorManager = " + it)
                 }
             }
@@ -37,7 +41,7 @@ class HomeListViewModel(
 
     fun getusers() {
         val coroutineExceptionHandler = CoroutineExceptionHandler { coroutineContext, throwable ->
-            mError.postValue(throwable.stackTrace.toString())
+            _error.postValue(throwable.stackTrace.toString())
             Log.d("Tag", "coroutineExceptionHandler = " + throwable.printStackTrace())
             throwable.printStackTrace()
         }
@@ -51,7 +55,7 @@ class HomeListViewModel(
             val dataSourceFactory = getUsersUseCase.getUsers()
 
             withContext(Dispatchers.Main) {
-                mUsersResult.postValue(LivePagedListBuilder(dataSourceFactory, pageConfig).build())
+                _usersResult.postValue(LivePagedListBuilder(dataSourceFactory, pageConfig).build())
             }
         }
     }
